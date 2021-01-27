@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Павел Воробьев](https://up.htmlacademy.ru/javascript/22/user/520531).
-* Наставник: `Неизвестно`.
+* Наставник: [Никита Победоносцев](https://htmlacademy.ru/profile/nikkypizza).
 
 ---
 
