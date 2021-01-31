@@ -1,24 +1,22 @@
 'use strict';
 
-let getRandomInteger = (min, max) => {
+const getRandomRoundedInt = (min, max) => {
   if (min < max && min >= 0 && max > 0) {
     // Источник https://learn.javascript.ru/task/random-int-min-max
-    let rand = min + Math.random() * (max + 1 - min);
-    return Math.floor(rand);
+    return Math.floor(min + Math.random() * (max + 1 - min));
   }
 
-  return 'Ошибка';
-}
+  throw new Error('getRandomRoundedInt - диапазон не соответствует условию');
+};
 
-let getRandomFloat = (min, max, precision) => {
+const getRandomFloatInt = (min, max, precision) => {
   if (min < max && min >= 0 && max > 0 && precision > 0) {
-    let rand = Math.random() * (max - min) + min;
-
-    return rand.toFixed(precision);
+    return (Math.random() * (max - min) + min).toFixed(precision);
   }
 
-  return 'Ошибка';
-}
+  throw new Error('getRandomFloatInt - диапазон или точность не соответствуют условию');
+};
 
-getRandomInteger(1, 3);
-getRandomFloat(1.2, 1.3, 2);
+getRandomRoundedInt(1, 3);
+getRandomFloatInt(1.2, 1.3, 2);
+
