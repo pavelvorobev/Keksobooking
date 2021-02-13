@@ -74,6 +74,3 @@ const createRandomAnnouncement = () => {
 
 const randomAnnouncements = new Array(10).fill(null).map(() => createRandomAnnouncement());
 
-
-
-console.log(randomAnnouncements);
