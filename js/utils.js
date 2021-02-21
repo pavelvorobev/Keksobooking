@@ -17,6 +17,6 @@ const getRandomFloatInt = (min, max, precision) => {
 
 const getRandomArrayElement = (array) => array[getRandomRoundedInt(0, array.length - 1)];
 
-const getRandomArrayElements = (array) => array.slice(getRandomRoundedInt(1, array.length - 1));
+const getRandomArrayElements = (array) => array.slice(getRandomRoundedInt(0, array.length - 1));
 
 export {getRandomRoundedInt, getRandomFloatInt, getRandomArrayElement, getRandomArrayElements};

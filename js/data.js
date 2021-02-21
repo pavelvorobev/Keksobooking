@@ -35,7 +35,7 @@ const createRandomOffer = () => {
     offer: {
       title: 'Заголовок',
       address: `${locationX},${locationY}`,
-      OFFER_PRICE: getRandomRoundedInt(OFFER_PRICE.min, OFFER_PRICE.max),
+      price: getRandomRoundedInt(OFFER_PRICE.min, OFFER_PRICE.max),
       type: getRandomArrayElement(APARTMENT_TYPE),
       rooms: getRandomRoundedInt(ROOMS_AMOUNT.min, ROOMS_AMOUNT.max),
       guests: getRandomRoundedInt(GUESTS_AMOUNT.min, GUESTS_AMOUNT.max),
@@ -50,4 +50,4 @@ const createRandomOffer = () => {
 
 const getRandomOffers = () => new Array(10).fill(null).map(createRandomOffer);
 
-getRandomOffers();
+export {getRandomOffers};
