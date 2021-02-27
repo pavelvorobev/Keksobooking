@@ -48,6 +48,5 @@ const createRandomOffer = () => {
   };
 };
 
-const getRandomOffers = () => new Array(10).fill(null).map(createRandomOffer);
 
-export {getRandomOffers};
+export {createRandomOffer};

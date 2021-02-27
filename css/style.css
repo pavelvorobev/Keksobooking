@@ -916,6 +916,17 @@ fieldset {
   border: 2px solid #ff5635;
 }
 
+.popup__title:empty,
+.popup__text--address:empty,
+.popup__text--price:empty,
+.popup__type:empty,
+.popup__text--capacity:empty,
+.popup__text--time:empty,
+.popup__features:empty,
+.popup__description:empty,
+.popup__photos:empty {
+  display: none;
+}
 
 /**
  * Сообщения об успешном и неуспешном создании объявления
