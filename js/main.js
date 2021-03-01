@@ -1,16 +1,16 @@
 
 import { getOfferCard } from './card.js';
+import './form.js';
 
 const mapCanvas = document.querySelector('.map__canvas');
-const randomOffersFragment = document.createDocumentFragment();
 
-const renderOffers = (number) => {
+const generateOffers = (number) => {
+  const randomOffersFragment = document.createDocumentFragment();
   for (let i = 1; i <= number; i++) {
     randomOffersFragment.appendChild(getOfferCard());
   }
+
+  return randomOffersFragment;
 }
 
-renderOffers(1);
-mapCanvas.appendChild(randomOffersFragment);
-
-
+mapCanvas.appendChild(generateOffers(1));

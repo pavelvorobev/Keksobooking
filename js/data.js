@@ -48,5 +48,4 @@ const createRandomOffer = () => {
   };
 };
 
-
-export {createRandomOffer};
+export {createRandomOffer, OFFER_PRICE};
