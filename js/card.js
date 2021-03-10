@@ -1,27 +1,21 @@
-import {createRandomOffer} from './data.js';
+import {createRandomOffer, APARTMENT_TYPES_MAP} from './data.js';
 import {getDeclension} from './utils.js';
 
 const offerCardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const randomOffer = createRandomOffer();
-const {author, offer} = randomOffer;
-const APARTMENT_TYPES_MAP = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalow: 'Бунгало',
-};
 
 const getOfferCard = () => {
+  const randomOffer = createRandomOffer();
+  const {author, offer} = randomOffer;
   const offerCard = offerCardTemplate.cloneNode(true);
   const popupPhoto = offerCard.querySelector('.popup__photo');
   const popupPhotos = offerCard.querySelector('.popup__photos');
 
   offerCard.querySelector('.popup__title').textContent = offer.title || '';
   offerCard.querySelector('.popup__text--address').textContent = offer.address || '';
-  (offer.price) ? offerCard.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь` : offerCard.querySelector('.popup__text--price').textContent = '';
-  offerCard.querySelector('.popup__type').textContent = APARTMENT_TYPES_MAP[offer.type];
-  (offer.rooms && offer.guests) ? offerCard.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${getDeclension(`${offer.rooms}`, ['комната', 'комнаты', 'комнат'])} для ${offer.guests} ${getDeclension(`${offer.guests}`, ['гостя', 'гостей', 'гостей'])}` : offerCard.querySelector('.popup__text--capacity').textContent = '';
-  (offer.checkin && offer.checkout) ? offerCard.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}` : offerCard.querySelector('.popup__text--time').textContent = '';
+  offerCard.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
+  offerCard.querySelector('.popup__type').textContent = APARTMENT_TYPES_MAP[offer.type.name];
+  offerCard.querySelector('.popup__text--capacity').textContent = offer.rooms && offer.guests ? `${offer.rooms} ${getDeclension(`${offer.rooms}`, ['комната', 'комнаты', 'комнат'])} для ${offer.guests} ${getDeclension(`${offer.guests}`, ['гостя', 'гостей', 'гостей'])}` :  '';
+  offerCard.querySelector('.popup__text--time').textContent = offer.checkin && offer.checkout ? `Заезд после ${offer.checkin}, выезд до ${offer.checkout}` : '';
 
   if (offer.features) {
     offerCard.querySelector('.popup__features').innerHTML = '';

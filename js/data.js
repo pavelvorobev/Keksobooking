@@ -5,7 +5,26 @@ const OFFER_PRICE = {
   min: 5000,
   max: 100000,
 };
-const APARTMENT_TYPE = ['palace', 'flat', 'house', 'bungalow'];
+const APARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalow'];
+const APARTMENT_TYPES_MAP = {
+  palace: {
+    name: 'Дворец',
+    minPrice: 10000,
+  },
+  flat: {
+    name: 'Комната',
+    minPrice: 1000,
+  },
+  house: {
+    name: 'Дом',
+    minPrice: 5000,
+  },
+  bungalow: {
+    name: 'Бунгало',
+    minPrice: 0,
+  },
+}
+
 const ROOMS_AMOUNT = {
   min: 1,
   max: 6,
@@ -36,7 +55,7 @@ const createRandomOffer = () => {
       title: 'Заголовок',
       address: `${locationX},${locationY}`,
       price: getRandomRoundedInt(OFFER_PRICE.min, OFFER_PRICE.max),
-      type: getRandomArrayElement(APARTMENT_TYPE),
+      type: getRandomArrayElement(APARTMENT_TYPES),
       rooms: getRandomRoundedInt(ROOMS_AMOUNT.min, ROOMS_AMOUNT.max),
       guests: getRandomRoundedInt(GUESTS_AMOUNT.min, GUESTS_AMOUNT.max),
       checkin: getRandomArrayElement(CHECKIN_TIME),
@@ -48,4 +67,4 @@ const createRandomOffer = () => {
   };
 };
 
-export {createRandomOffer, OFFER_PRICE};
+export {createRandomOffer, APARTMENT_TYPES_MAP};

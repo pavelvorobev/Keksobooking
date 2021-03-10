@@ -1,33 +1,51 @@
-import {OFFER_PRICE} from './data.js'
+import { APARTMENT_TYPES_MAP } from './data.js';
 
-const apartmentTypeInput = document.querySelector('#type');
-const offerPriceInput = document.querySelector('#price');
-const checkinTimeInput = document.querySelector('#timein');
-const checkoutTimeInput = document.querySelector('#timeout');
+const formNode = document.querySelector('.ad-form');
+const formHeaderFieldset = formNode.querySelector('.ad-form-header');
+const formElementFieldests = formNode.querySelectorAll('.ad-form__element');
+const mapFiltersForm = document.querySelector('.map__filters');
+const mapFiltersFormItems = mapFiltersForm.querySelectorAll('.map__filter');
 
-apartmentTypeInput.addEventListener('change', function() {
-  if (this.value == 'palace') {
-    offerPriceInput.placeholder = 10000;
-    OFFER_PRICE.min = 10000;
-  }
-  if (this.value == 'bungalow') {
-    offerPriceInput.placeholder = 0;
-    OFFER_PRICE.min = 0;
-  }
-  if (this.value == 'house') {
-    offerPriceInput.placeholder = 5000;
-    OFFER_PRICE.min = 5000;
-  }
-  if (this.value == 'flat') {
-    offerPriceInput.placeholder = 1000;
-    OFFER_PRICE.min = 1000;
-  }
-});
+formNode.address.setAttribute('disabled', 'disabled');
+formNode.address.value = '35.65283, 139.83947'
+formNode.classList.add('ad-form--disabled');
+mapFiltersForm.classList.add('map__filters--disabled');
+formHeaderFieldset.setAttribute('disabled', 'disabled');
 
-checkinTimeInput.addEventListener('change', function() {
-  checkoutTimeInput.value = this.value;
-});
+formElementFieldests.forEach((element) => {
+  element.setAttribute('disabled', 'disabled');
+})
 
-checkoutTimeInput.addEventListener('change', function() {
-  checkinTimeInput.value = this.value;
-});
+mapFiltersFormItems.forEach((item) => {
+  item.setAttribute('disabled', 'disabled');
+})
+
+const validatePriceInput = function () {
+  formNode.price.placeholder = APARTMENT_TYPES_MAP[formNode.type.value].minPrice;
+  formNode.price.min = APARTMENT_TYPES_MAP[formNode.type.value].minPrice;
+};
+
+const validateTimeSelects = function(evt) {
+  if (evt.target === formNode.timein) {
+    formNode.timeout.value = formNode.timein.value;
+  }
+  if (evt.target === formNode.timeout) {
+    formNode.timein.value = formNode.timeout.value;
+  }
+};
+
+const onFormNodeChange = function (evt) {
+  switch (evt.target) {
+    case formNode.timein:
+    case formNode.timeout:
+      validateTimeSelects(evt);
+      break;
+    case formNode.type:
+      validatePriceInput();
+      break;
+  }
+};
+
+formNode.addEventListener('change', onFormNodeChange);
+
+export {formNode, formHeaderFieldset, formElementFieldests, mapFiltersForm, mapFiltersFormItems};
