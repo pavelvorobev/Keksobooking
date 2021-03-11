@@ -1,22 +1,17 @@
-import {formNode, formHeaderFieldset, formElementFieldests, mapFiltersForm, mapFiltersFormItems} from './form.js';
+import { formNode, toggleDisabledOnFormNodes } from './form.js';
 import { getOfferCard } from './card.js';
 
 const L = window.L;
+const mapLng = 139.83947;
+const mapLat = 35.65283;
 const map = L.map('map-canvas')
   .on('load', () => {
-    formNode.classList.remove('ad-form--disabled');
-    mapFiltersForm.classList.remove('map__filters--disabled');
-    formHeaderFieldset.removeAttribute('disabled');
-    formElementFieldests.forEach((element) => {
-      element.removeAttribute('disabled');
-    })
-    mapFiltersFormItems.forEach((item) => {
-      item.removeAttribute('disabled');
-    })
+    toggleDisabledOnFormNodes();
+    formNode.address.value = `${mapLat}, ${mapLng}`
   })
   .setView({
-    lat: 35.65283,
-    lng: 139.83947,
+    lat: mapLat,
+    lng: mapLng,
   }, 10);
 
 L.tileLayer(
@@ -40,8 +35,8 @@ const regularPinIcon = L.icon({
 
 const mainPin = L.marker(
   {
-    lat: 35.652832,
-    lng: 139.839478,
+    lat: mapLat,
+    lng: mapLng,
   },
   {
     draggable: true,
@@ -51,7 +46,7 @@ const mainPin = L.marker(
 
 mainPin.addTo(map)
 
-mainPin.on('moveend', (evt) => {
+mainPin.on('drag', (evt) => {
   const coords = evt.target.getLatLng();
   const lng = coords.lng.toFixed(5);
   const lat = coords.lat.toFixed(5);
@@ -70,13 +65,14 @@ const generateOffers = (number) => {
 const offers = generateOffers(10);
 
 for (let child of offers.children) {
+  const address = child.querySelector('.popup__text--address').textContent;
   const regularPin = L.marker(
     {
-      lat: 35.652122,
-      lng: 139.839478,
+      lat: address.substring(0, address.indexOf(',')),
+      lng: address.substring(address.indexOf(' ') + 1),
     },
     {
-      draggable: true,
+      draggable: false,
       icon: regularPinIcon,
     },
   )

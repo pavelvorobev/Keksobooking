@@ -13,7 +13,7 @@ const getOfferCard = () => {
   offerCard.querySelector('.popup__title').textContent = offer.title || '';
   offerCard.querySelector('.popup__text--address').textContent = offer.address || '';
   offerCard.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
-  offerCard.querySelector('.popup__type').textContent = APARTMENT_TYPES_MAP[offer.type.name];
+  offerCard.querySelector('.popup__type').textContent = APARTMENT_TYPES_MAP[offer.type].name;
   offerCard.querySelector('.popup__text--capacity').textContent = offer.rooms && offer.guests ? `${offer.rooms} ${getDeclension(`${offer.rooms}`, ['комната', 'комнаты', 'комнат'])} для ${offer.guests} ${getDeclension(`${offer.guests}`, ['гостя', 'гостей', 'гостей'])}` :  '';
   offerCard.querySelector('.popup__text--time').textContent = offer.checkin && offer.checkout ? `Заезд после ${offer.checkin}, выезд до ${offer.checkout}` : '';
 
