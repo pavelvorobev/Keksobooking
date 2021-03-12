@@ -30,7 +30,52 @@ const validateTimeSelects = function(evt) {
   }
 };
 
-const onFormNodeChange = function (evt) {
+const validateGuestsSelects = function(evt) {
+  switch (evt.target.value) {
+    case '1':
+      for (let it of formNode.capacity) {
+        if (it.value === '1') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+    case '2':
+      for (let it of formNode.capacity) {
+        if (it.value === '1' || it.value === '2') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+    case '3':
+      for (let it of formNode.capacity) {
+        if (it.value === '1' || it.value === '2' || it.value === '3') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+    case '100':
+      for (let it of formNode.capacity) {
+        if (it.value === '0') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+  }
+};
+
+const onFormNodeChange = function(evt) {
   switch (evt.target) {
     case formNode.timein:
     case formNode.timeout:
@@ -38,6 +83,9 @@ const onFormNodeChange = function (evt) {
       break;
     case formNode.type:
       validatePriceInput();
+      break;
+    case formNode.rooms:
+      validateGuestsSelects(evt);
       break;
   }
 };
