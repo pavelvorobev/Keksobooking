@@ -1,29 +1,25 @@
 import { APARTMENT_TYPES_MAP } from './data.js';
 
 const formNode = document.querySelector('.ad-form');
-const formHeaderFieldset = formNode.querySelector('.ad-form-header');
-const formElementFieldests = formNode.querySelectorAll('.ad-form__element');
 const mapFiltersForm = document.querySelector('.map__filters');
-const mapFiltersFormItems = mapFiltersForm.querySelectorAll('.map__filter');
+let isPageDisabled = false;
 
-formNode.address.setAttribute('disabled', 'disabled');
-formNode.address.value = '35.65283, 139.83947'
-formNode.classList.add('ad-form--disabled');
-mapFiltersForm.classList.add('map__filters--disabled');
-formHeaderFieldset.setAttribute('disabled', 'disabled');
+const toggleDisabledOnFormNodes = () => {
+  isPageDisabled = !isPageDisabled;
 
-formElementFieldests.forEach((element) => {
-  element.setAttribute('disabled', 'disabled');
-})
+  formNode.classList.toggle('ad-form--disabled', isPageDisabled);
+  mapFiltersForm.classList.toggle('map__filters--disabled', isPageDisabled);
+  Array.from(formNode.elements).forEach(it => it.disabled = isPageDisabled);
+  Array.from(mapFiltersForm.elements).forEach(it => it.disabled = isPageDisabled);
+};
 
-mapFiltersFormItems.forEach((item) => {
-  item.setAttribute('disabled', 'disabled');
-})
+toggleDisabledOnFormNodes();
 
 const validatePriceInput = function () {
   formNode.price.placeholder = APARTMENT_TYPES_MAP[formNode.type.value].minPrice;
   formNode.price.min = APARTMENT_TYPES_MAP[formNode.type.value].minPrice;
 };
+validatePriceInput();
 
 const validateTimeSelects = function(evt) {
   if (evt.target === formNode.timein) {
@@ -34,7 +30,52 @@ const validateTimeSelects = function(evt) {
   }
 };
 
-const onFormNodeChange = function (evt) {
+const validateGuestsSelects = function(evt) {
+  switch (evt.target.value) {
+    case '1':
+      for (let it of formNode.capacity) {
+        if (it.value === '1') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+    case '2':
+      for (let it of formNode.capacity) {
+        if (it.value === '1' || it.value === '2') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+    case '3':
+      for (let it of formNode.capacity) {
+        if (it.value === '1' || it.value === '2' || it.value === '3') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+    case '100':
+      for (let it of formNode.capacity) {
+        if (it.value === '0') {
+          it.disabled = false;
+          it.selected = true;
+        } else {
+          it.disabled = true;
+        }
+      }
+      break;
+  }
+};
+
+const onFormNodeChange = function(evt) {
   switch (evt.target) {
     case formNode.timein:
     case formNode.timeout:
@@ -43,9 +84,12 @@ const onFormNodeChange = function (evt) {
     case formNode.type:
       validatePriceInput();
       break;
+    case formNode.rooms:
+      validateGuestsSelects(evt);
+      break;
   }
 };
 
 formNode.addEventListener('change', onFormNodeChange);
 
-export {formNode, formHeaderFieldset, formElementFieldests, mapFiltersForm, mapFiltersFormItems};
+export {formNode, toggleDisabledOnFormNodes};
