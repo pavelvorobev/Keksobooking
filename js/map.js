@@ -1,17 +1,21 @@
-import { formNode, toggleDisabledOnFormNodes } from './form.js';
+import { offerForm, toggleDisabledOnOfferForm } from './form.js';
 import { getOfferCard } from './card.js';
 
+
 const L = window.L;
-const mapLng = 139.83947;
-const mapLat = 35.65283;
+const MAP_INITIAL_COORDS = {
+  lat: 35.65283,
+  lng: 139.83947,
+}
+
 const map = L.map('map-canvas')
   .on('load', () => {
-    toggleDisabledOnFormNodes();
-    formNode.address.value = `${mapLat}, ${mapLng}`
+    toggleDisabledOnOfferForm();
+    offerForm.address.value = `${MAP_INITIAL_COORDS.lat}, ${MAP_INITIAL_COORDS.lng}`
   })
   .setView({
-    lat: mapLat,
-    lng: mapLng,
+    lat: MAP_INITIAL_COORDS.lat,
+    lng: MAP_INITIAL_COORDS.lng,
   }, 10);
 
 L.tileLayer(
@@ -35,8 +39,8 @@ const regularPinIcon = L.icon({
 
 const mainPin = L.marker(
   {
-    lat: mapLat,
-    lng: mapLng,
+    lat: MAP_INITIAL_COORDS.lat,
+    lng: MAP_INITIAL_COORDS.lng,
   },
   {
     draggable: true,
@@ -48,34 +52,29 @@ mainPin.addTo(map)
 
 mainPin.on('drag', (evt) => {
   const coords = evt.target.getLatLng();
-  const lng = coords.lng.toFixed(5);
-  const lat = coords.lat.toFixed(5);
-  formNode.address.value = `${lat}, ${lng}`;
+  offerForm.address.value = `${coords.lng.toFixed(5)}, ${coords.lat.toFixed(5)}`;
 });
 
-const generateOffers = (number) => {
-  const randomOffersFragment = document.createDocumentFragment();
-  for (let i = 1; i <= number; i++) {
-    randomOffersFragment.appendChild(getOfferCard());
-  }
+const getPins = (offers) => {
+  offers.forEach((offer) => {
+    const regularPin = L.marker(
+      {
+        lat: offer.location.lat,
+        lng: offer.location.lng,
+      },
+      {
+        draggable: false,
+        icon: regularPinIcon,
+      },
+    );
 
-  return randomOffersFragment;
+    regularPin
+      .addTo(map)
+      .bindPopup(getOfferCard(offer));
+  });
 }
 
-const offers = generateOffers(10);
+export {getPins, mainPin, MAP_INITIAL_COORDS, L};
 
-for (let child of offers.children) {
-  const address = child.querySelector('.popup__text--address').textContent;
-  const regularPin = L.marker(
-    {
-      lat: address.substring(0, address.indexOf(',')),
-      lng: address.substring(address.indexOf(' ') + 1),
-    },
-    {
-      draggable: false,
-      icon: regularPinIcon,
-    },
-  )
 
-  regularPin.addTo(map).bindPopup(child);
-}
+

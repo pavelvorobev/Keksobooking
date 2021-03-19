@@ -1,10 +1,10 @@
-import {getRandomRoundedInt, getRandomFloatInt, getRandomArrayElement, getRandomArrayElements} from './utils.js';
+/* import {getRandomRoundedInt, getRandomFloatInt, getRandomArrayElement, getRandomArrayElements} from './utils.js'; */
 
-const TOTAL_USERS = 8;
+/* const TOTAL_USERS = 8;
 const OFFER_PRICE = {
   min: 5000,
   max: 100000,
-};
+}; */
 
 const APARTMENT_TYPES_MAP = {
   palace: {
@@ -23,9 +23,9 @@ const APARTMENT_TYPES_MAP = {
     name: 'Бунгало',
     minPrice: 0,
   },
-}
+};
 
-const ROOMS_AMOUNT = {
+/* const ROOMS_AMOUNT = {
   min: 1,
   max: 6,
 };
@@ -65,6 +65,6 @@ const createRandomOffer = () => {
       photos: getRandomArrayElements(APARTMENT_PHOTOS),
     },
   };
-};
+}; */
 
-export {createRandomOffer, APARTMENT_TYPES_MAP};
+export { APARTMENT_TYPES_MAP};

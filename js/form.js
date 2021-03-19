@@ -1,95 +1,80 @@
 import { APARTMENT_TYPES_MAP } from './data.js';
 
-const formNode = document.querySelector('.ad-form');
+const offerForm = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
+const ROOMS_FOR_GUESTS_MAP = {
+  1: ['1'],
+  2: ['2', '1'],
+  3: ['3', '2', '1'],
+  100: ['0'],
+};
+
 let isPageDisabled = false;
 
-const toggleDisabledOnFormNodes = () => {
+const toggleDisabledOnOfferForm = () => {
   isPageDisabled = !isPageDisabled;
 
-  formNode.classList.toggle('ad-form--disabled', isPageDisabled);
+  offerForm.classList.toggle('ad-form--disabled', isPageDisabled);
   mapFiltersForm.classList.toggle('map__filters--disabled', isPageDisabled);
-  Array.from(formNode.elements).forEach(it => it.disabled = isPageDisabled);
+  Array.from(offerForm.elements).forEach((it) => {
+    if (it.name == 'address') {
+      it.readOnly = true;
+    } else {
+      it.disabled = isPageDisabled
+    }
+  });
   Array.from(mapFiltersForm.elements).forEach(it => it.disabled = isPageDisabled);
 };
 
-toggleDisabledOnFormNodes();
+toggleDisabledOnOfferForm();
 
 const validatePriceInput = function () {
-  formNode.price.placeholder = APARTMENT_TYPES_MAP[formNode.type.value].minPrice;
-  formNode.price.min = APARTMENT_TYPES_MAP[formNode.type.value].minPrice;
+  offerForm.price.placeholder = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
+  offerForm.price.min = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
 };
 validatePriceInput();
 
 const validateTimeSelects = function(evt) {
-  if (evt.target === formNode.timein) {
-    formNode.timeout.value = formNode.timein.value;
+  if (evt.target === offerForm.timein) {
+    offerForm.timeout.value = offerForm.timein.value;
   }
-  if (evt.target === formNode.timeout) {
-    formNode.timein.value = formNode.timeout.value;
+  if (evt.target === offerForm.timeout) {
+    offerForm.timein.value = offerForm.timeout.value;
   }
 };
 
 const validateGuestsSelects = function(evt) {
-  switch (evt.target.value) {
-    case '1':
-      for (let it of formNode.capacity) {
-        if (it.value === '1') {
-          it.disabled = false;
-          it.selected = true;
-        } else {
-          it.disabled = true;
-        }
-      }
-      break;
-    case '2':
-      for (let it of formNode.capacity) {
-        if (it.value === '1' || it.value === '2') {
-          it.disabled = false;
-          it.selected = true;
-        } else {
-          it.disabled = true;
-        }
-      }
-      break;
-    case '3':
-      for (let it of formNode.capacity) {
-        if (it.value === '1' || it.value === '2' || it.value === '3') {
-          it.disabled = false;
-          it.selected = true;
-        } else {
-          it.disabled = true;
-        }
-      }
-      break;
-    case '100':
-      for (let it of formNode.capacity) {
-        if (it.value === '0') {
-          it.disabled = false;
-          it.selected = true;
-        } else {
-          it.disabled = true;
-        }
-      }
-      break;
+  const ARR = ROOMS_FOR_GUESTS_MAP[evt.target.value];
+
+  for (let it of offerForm.capacity) {
+    if (ARR.includes(it.value)) {
+      it.disabled = false;
+    } else {
+      it.disabled = true;
+    }
   }
+
+  offerForm.capacity.value = ARR[0];
 };
 
-const onFormNodeChange = function(evt) {
+
+const onofferFormChange = function(evt) {
   switch (evt.target) {
-    case formNode.timein:
-    case formNode.timeout:
+    case offerForm.timein:
+    case offerForm.timeout:
       validateTimeSelects(evt);
       break;
-    case formNode.type:
+    case offerForm.type:
       validatePriceInput();
       break;
-    case formNode.rooms:
+    case offerForm.rooms:
       validateGuestsSelects(evt);
       break;
   }
 };
 
-formNode.addEventListener('change', onFormNodeChange);
+offerForm.addEventListener('change', onofferFormChange);
 
-export {formNode, toggleDisabledOnFormNodes};
+
+
+export {offerForm, mapFiltersForm, toggleDisabledOnOfferForm};
