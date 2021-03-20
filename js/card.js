@@ -1,4 +1,4 @@
-import { APARTMENT_TYPES_MAP} from './data.js';
+import { APARTMENT_TYPES_MAP} from './form.js';
 import {getDeclension} from './utils.js';
 
 const offerCardTemplate = document.querySelector('#card').content.querySelector('.popup');

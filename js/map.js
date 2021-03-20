@@ -1,8 +1,7 @@
-import { offerForm, toggleDisabledOnOfferForm } from './form.js';
+/* global L:readonly */
+import { offerForm, toggleDisabledOnFormNodes } from './form.js';
 import { getOfferCard } from './card.js';
 
-
-const L = window.L;
 const MAP_INITIAL_COORDS = {
   lat: 35.65283,
   lng: 139.83947,
@@ -10,8 +9,8 @@ const MAP_INITIAL_COORDS = {
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    toggleDisabledOnOfferForm();
-    offerForm.address.value = `${MAP_INITIAL_COORDS.lat}, ${MAP_INITIAL_COORDS.lng}`
+    toggleDisabledOnFormNodes();
+    offerForm.address.value = `${MAP_INITIAL_COORDS.lat}, ${MAP_INITIAL_COORDS.lng}`;
   })
   .setView({
     lat: MAP_INITIAL_COORDS.lat,
@@ -74,7 +73,7 @@ const getPins = (offers) => {
   });
 }
 
-export {getPins, mainPin, MAP_INITIAL_COORDS, L};
+export {getPins, mainPin, MAP_INITIAL_COORDS};
 
 
 

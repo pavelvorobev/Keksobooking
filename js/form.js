@@ -1,5 +1,3 @@
-import { APARTMENT_TYPES_MAP } from './data.js';
-
 const offerForm = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
 const ROOMS_FOR_GUESTS_MAP = {
@@ -9,24 +7,41 @@ const ROOMS_FOR_GUESTS_MAP = {
   100: ['0'],
 };
 
+const APARTMENT_TYPES_MAP = {
+  palace: {
+    name: 'Дворец',
+    minPrice: 10000,
+  },
+  flat: {
+    name: 'Квартира',
+    minPrice: 1000,
+  },
+  house: {
+    name: 'Дом',
+    minPrice: 5000,
+  },
+  bungalow: {
+    name: 'Бунгало',
+    minPrice: 0,
+  },
+};
+
 let isPageDisabled = false;
 
-const toggleDisabledOnOfferForm = () => {
+const toggleDisabledOnFormNodes = () => {
   isPageDisabled = !isPageDisabled;
 
   offerForm.classList.toggle('ad-form--disabled', isPageDisabled);
   mapFiltersForm.classList.toggle('map__filters--disabled', isPageDisabled);
   Array.from(offerForm.elements).forEach((it) => {
-    if (it.name == 'address') {
-      it.readOnly = true;
-    } else {
+    if (it.name != 'address') {
       it.disabled = isPageDisabled
     }
   });
   Array.from(mapFiltersForm.elements).forEach(it => it.disabled = isPageDisabled);
 };
 
-toggleDisabledOnOfferForm();
+toggleDisabledOnFormNodes();
 
 const validatePriceInput = function () {
   offerForm.price.placeholder = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
@@ -37,24 +52,19 @@ validatePriceInput();
 const validateTimeSelects = function(evt) {
   if (evt.target === offerForm.timein) {
     offerForm.timeout.value = offerForm.timein.value;
-  }
-  if (evt.target === offerForm.timeout) {
+  } else {
     offerForm.timein.value = offerForm.timeout.value;
   }
 };
 
 const validateGuestsSelects = function(evt) {
-  const ARR = ROOMS_FOR_GUESTS_MAP[evt.target.value];
+  const capacityOptions = ROOMS_FOR_GUESTS_MAP[evt.target.value];
 
   for (let it of offerForm.capacity) {
-    if (ARR.includes(it.value)) {
-      it.disabled = false;
-    } else {
-      it.disabled = true;
-    }
+    it.disabled = !capacityOptions.includes(it.value)
   }
 
-  offerForm.capacity.value = ARR[0];
+  offerForm.capacity.value = capacityOptions[0];
 };
 
 
@@ -77,4 +87,4 @@ offerForm.addEventListener('change', onofferFormChange);
 
 
 
-export {offerForm, mapFiltersForm, toggleDisabledOnOfferForm};
+export {offerForm, mapFiltersForm, toggleDisabledOnFormNodes, APARTMENT_TYPES_MAP};
