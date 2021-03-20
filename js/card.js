@@ -1,11 +1,11 @@
-import {createRandomOffer, APARTMENT_TYPES_MAP} from './data.js';
+import { APARTMENT_TYPES_MAP} from './form.js';
 import {getDeclension} from './utils.js';
 
 const offerCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const getOfferCard = () => {
-  const randomOffer = createRandomOffer();
-  const {author, offer} = randomOffer;
+const getOfferCard = (offerObj) => {
+
+  const {author, offer} = offerObj;
   const offerCard = offerCardTemplate.cloneNode(true);
   const popupPhoto = offerCard.querySelector('.popup__photo');
   const popupPhotos = offerCard.querySelector('.popup__photos');
