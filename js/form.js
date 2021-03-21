@@ -26,28 +26,30 @@ const APARTMENT_TYPES_MAP = {
   },
 };
 
-let isPageDisabled = false;
+let isOfferFormDisabled = false;
+let isFilterFormDisabled = false
 
-const toggleDisabledOnFormNodes = () => {
-  isPageDisabled = !isPageDisabled;
+const toggleDisabledOnOfferFormNodes = () => {
+  isOfferFormDisabled = !isOfferFormDisabled;
 
-  offerForm.classList.toggle('ad-form--disabled', isPageDisabled);
-  mapFiltersForm.classList.toggle('map__filters--disabled', isPageDisabled);
-  Array.from(offerForm.elements).forEach((it) => {
-    if (it.name != 'address') {
-      it.disabled = isPageDisabled
-    }
-  });
-  Array.from(mapFiltersForm.elements).forEach(it => it.disabled = isPageDisabled);
+  offerForm.classList.toggle('ad-form--disabled', isOfferFormDisabled);
+  Array.from(offerForm.elements).forEach((it) => it.disabled = isOfferFormDisabled);
 };
 
-toggleDisabledOnFormNodes();
+const toggleDisabledOnFilterFormNodes = () => {
+  isFilterFormDisabled = !isFilterFormDisabled;
+
+  mapFiltersForm.classList.toggle('map__filters--disabled', isFilterFormDisabled);
+  Array.from(mapFiltersForm.elements).forEach(it => it.disabled = isFilterFormDisabled);
+};
+
+toggleDisabledOnOfferFormNodes();
+toggleDisabledOnFilterFormNodes();
 
 const validatePriceInput = function () {
   offerForm.price.placeholder = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
   offerForm.price.min = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
 };
-validatePriceInput();
 
 const validateTimeSelects = function(evt) {
   if (evt.target === offerForm.timein) {
@@ -68,7 +70,7 @@ const validateGuestsSelects = function(evt) {
 };
 
 
-const onofferFormChange = function(evt) {
+const onOfferFormChange = function(evt) {
   switch (evt.target) {
     case offerForm.timein:
     case offerForm.timeout:
@@ -83,8 +85,8 @@ const onofferFormChange = function(evt) {
   }
 };
 
-offerForm.addEventListener('change', onofferFormChange);
+offerForm.addEventListener('change', onOfferFormChange);
 
 
 
-export {offerForm, mapFiltersForm, toggleDisabledOnFormNodes, APARTMENT_TYPES_MAP};
+export {offerForm, mapFiltersForm, toggleDisabledOnOfferFormNodes, toggleDisabledOnFilterFormNodes, APARTMENT_TYPES_MAP};

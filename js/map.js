@@ -1,5 +1,5 @@
 /* global L:readonly */
-import { offerForm, toggleDisabledOnFormNodes } from './form.js';
+import { offerForm, toggleDisabledOnOfferFormNodes, toggleDisabledOnFilterFormNodes, mapFiltersForm } from './form.js';
 import { getOfferCard } from './card.js';
 
 const MAP_INITIAL_COORDS = {
@@ -9,7 +9,7 @@ const MAP_INITIAL_COORDS = {
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    toggleDisabledOnFormNodes();
+    toggleDisabledOnOfferFormNodes();
     offerForm.address.value = `${MAP_INITIAL_COORDS.lat}, ${MAP_INITIAL_COORDS.lng}`;
   })
   .setView({
@@ -51,11 +51,14 @@ mainPin.addTo(map)
 
 mainPin.on('drag', (evt) => {
   const coords = evt.target.getLatLng();
-  offerForm.address.value = `${coords.lng.toFixed(5)}, ${coords.lat.toFixed(5)}`;
+  offerForm.address.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
 });
+
+let regularPinsArr = [];
 
 const getPins = (offers) => {
   offers.forEach((offer) => {
+
     const regularPin = L.marker(
       {
         lat: offer.location.lat,
@@ -67,10 +70,43 @@ const getPins = (offers) => {
       },
     );
 
+    regularPinsArr.push(regularPin);
+
     regularPin
       .addTo(map)
       .bindPopup(getOfferCard(offer));
   });
+  toggleDisabledOnFilterFormNodes();
+  mapFiltersForm.housingtype.addEventListener('change', (evt) => {
+    toggleDisabledOnFilterFormNodes();
+    regularPinsArr.forEach((marker) => {
+      marker.remove();
+    })
+    regularPinsArr = [];
+    let filteredOffers = offers.filter((offer) => {
+      if (offer.offer.type === evt.target.value || evt.target.value === 'any') {
+        return offer;
+      }
+    });
+
+    filteredOffers.forEach((offer) => {
+      const regularPin = L.marker(
+        {
+          lat: offer.location.lat,
+          lng: offer.location.lng,
+        },
+        {
+          draggable: false,
+          icon: regularPinIcon,
+        },
+      );
+      regularPinsArr.push(regularPin);
+      regularPin
+        .addTo(map)
+        .bindPopup(getOfferCard(offer));
+    });
+    toggleDisabledOnFilterFormNodes();
+  })
 }
 
 export {getPins, mainPin, MAP_INITIAL_COORDS};
