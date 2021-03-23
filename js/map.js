@@ -1,11 +1,14 @@
 /* global L:readonly */
-import { offerForm, toggleDisabledOnOfferFormNodes, toggleDisabledOnFilterFormNodes, mapFiltersForm } from './form.js';
+/* global _:readonly */
+import { offerForm, toggleDisabledOnOfferFormNodes, toggleDisabledOnFilterFormNodes, mapFiltersForm, featuresFilterInputs} from './form.js';
 import { getOfferCard } from './card.js';
 
 const MAP_INITIAL_COORDS = {
   lat: 35.65283,
   lng: 139.83947,
-}
+};
+
+const RERENDER_DELAY = 500;
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -47,6 +50,13 @@ const mainPin = L.marker(
   },
 );
 
+const contains = (where, what) => {
+  for(let i=0; i<what.length; i++){
+    if (where.indexOf(what[i]) == -1) return false;
+  }
+  return true;
+};
+
 mainPin.addTo(map)
 
 mainPin.on('drag', (evt) => {
@@ -57,39 +67,64 @@ mainPin.on('drag', (evt) => {
 let regularPinsArr = [];
 
 const getPins = (offers) => {
-  offers.forEach((offer) => {
-
-    const regularPin = L.marker(
-      {
-        lat: offer.location.lat,
-        lng: offer.location.lng,
-      },
-      {
-        draggable: false,
-        icon: regularPinIcon,
-      },
-    );
-
-    regularPinsArr.push(regularPin);
-
-    regularPin
-      .addTo(map)
-      .bindPopup(getOfferCard(offer));
-  });
-  toggleDisabledOnFilterFormNodes();
-  mapFiltersForm.housingtype.addEventListener('change', (evt) => {
-    toggleDisabledOnFilterFormNodes();
-    regularPinsArr.forEach((marker) => {
-      marker.remove();
-    })
+  mapFiltersForm.addEventListener('change', _.debounce(() => {
+    let featuresArr = [];
+    regularPinsArr.forEach((marker) => marker.remove());
     regularPinsArr = [];
-    let filteredOffers = offers.filter((offer) => {
-      if (offer.offer.type === evt.target.value || evt.target.value === 'any') {
+
+    let filteredOffersByType = offers.filter((offer) => {
+      if (offer.offer.type === mapFiltersForm['housing-type'].value || mapFiltersForm['housing-type'].value === 'any') {
         return offer;
       }
     });
 
-    filteredOffers.forEach((offer) => {
+    let filteredOffersByPrice = filteredOffersByType.filter((offer) => {
+      switch (mapFiltersForm['housing-price'].value) {
+        case 'any':
+          return offer;
+        case 'middle':
+          if (offer.offer.price >= 10000 && offer.offer.price < 50000) {
+            return offer;
+          }
+          break;
+        case 'low':
+          if (offer.offer.price <= 10000) {
+            return offer;
+          }
+          break;
+        case 'high':
+          if (offer.offer.price >= 50000 ) {
+            return offer;
+          }
+          break;
+      }
+    });
+
+    let filteredOffersByRooms = filteredOffersByPrice.filter((offer) => {
+      if (offer.offer.rooms === +mapFiltersForm['housing-rooms'].value || mapFiltersForm['housing-rooms'].value === 'any') {
+        return offer;
+      }
+    });
+
+    let filteredOffersByGuests = filteredOffersByRooms.filter((offer) => {
+      if (offer.offer.guests === +mapFiltersForm['housing-guests'].value || mapFiltersForm['housing-guests'].value === 'any') {
+        return offer;
+      }
+    });
+
+    featuresFilterInputs.forEach((input) => {
+      if (input.checked) {
+        featuresArr.push(input.value)
+      }
+    })
+
+    let filteredOffersByFeatures = filteredOffersByGuests.filter((offer) => {
+      if (contains(offer.offer.features, featuresArr)) {
+        return offer;
+      }
+    });
+
+    filteredOffersByFeatures.forEach((offer) => {
       const regularPin = L.marker(
         {
           lat: offer.location.lat,
@@ -105,8 +140,10 @@ const getPins = (offers) => {
         .addTo(map)
         .bindPopup(getOfferCard(offer));
     });
-    toggleDisabledOnFilterFormNodes();
-  })
+  }, RERENDER_DELAY ))
+
+  mapFiltersForm.dispatchEvent(new Event('change'));
+  toggleDisabledOnFilterFormNodes();
 }
 
 export {getPins, mainPin, MAP_INITIAL_COORDS};
