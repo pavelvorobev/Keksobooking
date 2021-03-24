@@ -1,5 +1,7 @@
 import {getPins} from './map.js';
 import {mainContent, onMessageEscKeydown, removeMessageElement} from './submit.js';
+import {mapFiltersForm, toggleDisabledOnFilterFormNodes} from './form.js';
+import {filterOffers} from './filter.js';
 
 const messageOnFailGetData = document.querySelector('#error2').content.querySelector('.error').cloneNode(true);
 const URL_FOR_GET_OFFERS = 'https://22.javascript.pages.academy/keksobooking/data';
@@ -14,6 +16,12 @@ const onFailGetData = () => {
 fetch(URL_FOR_GET_OFFERS)
   .then((response) => response.json())
   .then((offers) => {
+    toggleDisabledOnFilterFormNodes();
     getPins(offers.slice(0, OFFER_COUNT));
+    mapFiltersForm.addEventListener('change', () => {
+      filterOffers(offers);
+    });
   })
   .catch(() => onFailGetData());
+
+export {OFFER_COUNT};

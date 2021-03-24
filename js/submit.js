@@ -60,28 +60,25 @@ const handleErrors = (response) => {
   return response;
 }
 
-const setOfferFormSubmit = () => {
-  offerForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+offerForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
 
-    const formData = new FormData(evt.target);
+  const formData = new FormData(evt.target);
 
-    fetch(
-      URL_FOR_SEND_DATA,
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then(handleErrors)
-      .then(() => {
-        onFormsReset();
-        onSuccessFormSubmit()
-      })
-      .catch(() => onFailFormSubmit())
-  });
-};
+  fetch(
+    URL_FOR_SEND_DATA,
+    {
+      method: 'POST',
+      body: formData,
+    },
+  )
+    .then(handleErrors)
+    .then(() => {
+      onFormsReset();
+      onSuccessFormSubmit()
+    })
+    .catch(() => onFailFormSubmit())
+});
 
-setOfferFormSubmit();
 
 export {mainContent, onMessageEscKeydown, removeMessageElement};
