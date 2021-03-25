@@ -1,11 +1,13 @@
 /* global L:readonly */
-import { offerForm, toggleDisabledOnOfferFormNodes, toggleDisabledOnFilterFormNodes, mapFiltersForm } from './form.js';
+import { offerForm, toggleDisabledOnOfferFormNodes} from './form.js';
 import { getOfferCard } from './card.js';
+import {regularPinsArr} from './filter.js';
+
 
 const MAP_INITIAL_COORDS = {
   lat: 35.65283,
   lng: 139.83947,
-}
+};
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -54,11 +56,8 @@ mainPin.on('drag', (evt) => {
   offerForm.address.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
 });
 
-let regularPinsArr = [];
-
 const getPins = (offers) => {
   offers.forEach((offer) => {
-
     const regularPin = L.marker(
       {
         lat: offer.location.lat,
@@ -69,44 +68,11 @@ const getPins = (offers) => {
         icon: regularPinIcon,
       },
     );
-
     regularPinsArr.push(regularPin);
-
     regularPin
       .addTo(map)
       .bindPopup(getOfferCard(offer));
   });
-  toggleDisabledOnFilterFormNodes();
-  mapFiltersForm.housingtype.addEventListener('change', (evt) => {
-    toggleDisabledOnFilterFormNodes();
-    regularPinsArr.forEach((marker) => {
-      marker.remove();
-    })
-    regularPinsArr = [];
-    let filteredOffers = offers.filter((offer) => {
-      if (offer.offer.type === evt.target.value || evt.target.value === 'any') {
-        return offer;
-      }
-    });
-
-    filteredOffers.forEach((offer) => {
-      const regularPin = L.marker(
-        {
-          lat: offer.location.lat,
-          lng: offer.location.lng,
-        },
-        {
-          draggable: false,
-          icon: regularPinIcon,
-        },
-      );
-      regularPinsArr.push(regularPin);
-      regularPin
-        .addTo(map)
-        .bindPopup(getOfferCard(offer));
-    });
-    toggleDisabledOnFilterFormNodes();
-  })
 }
 
 export {getPins, mainPin, MAP_INITIAL_COORDS};

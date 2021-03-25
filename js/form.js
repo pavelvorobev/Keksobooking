@@ -26,6 +26,7 @@ const APARTMENT_TYPES_MAP = {
   },
 };
 
+const featuresFilterInputs = document.querySelectorAll('.map__checkbox');
 let isOfferFormDisabled = false;
 let isFilterFormDisabled = false
 
@@ -42,9 +43,6 @@ const toggleDisabledOnFilterFormNodes = () => {
   mapFiltersForm.classList.toggle('map__filters--disabled', isFilterFormDisabled);
   Array.from(mapFiltersForm.elements).forEach(it => it.disabled = isFilterFormDisabled);
 };
-
-toggleDisabledOnOfferFormNodes();
-toggleDisabledOnFilterFormNodes();
 
 const validatePriceInput = function () {
   offerForm.price.placeholder = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
@@ -87,6 +85,7 @@ const onOfferFormChange = function(evt) {
 
 offerForm.addEventListener('change', onOfferFormChange);
 
+toggleDisabledOnOfferFormNodes();
+toggleDisabledOnFilterFormNodes();
 
-
-export {offerForm, mapFiltersForm, toggleDisabledOnOfferFormNodes, toggleDisabledOnFilterFormNodes, APARTMENT_TYPES_MAP};
+export {offerForm, mapFiltersForm, toggleDisabledOnOfferFormNodes, toggleDisabledOnFilterFormNodes, APARTMENT_TYPES_MAP, featuresFilterInputs};

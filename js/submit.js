@@ -9,12 +9,13 @@ const messageOnFail = document.querySelector('#error').content.querySelector('.e
 const errorButton = messageOnFail.querySelector('.error__button');
 const formsResetButton = document.querySelector('.ad-form__reset');
 
-const onFormsReset = (evt) => {
-  if (evt.target === formsResetButton) {
-    evt.preventDefault();
-  }
+const URL_FOR_SEND_DATA = 'https://22.javascript.pages.academy/keksobooking';
+
+const onFormsReset = () => {
   mainPin.setLatLng(L.latLng(MAP_INITIAL_COORDS.lat, MAP_INITIAL_COORDS.lng));
   mapFiltersForm.reset();
+
+  mapFiltersForm.dispatchEvent(new Event('change'));
   offerForm.reset();
   offerForm.address.value = `${MAP_INITIAL_COORDS.lat}, ${MAP_INITIAL_COORDS.lng}`;
 }
@@ -59,28 +60,25 @@ const handleErrors = (response) => {
   return response;
 }
 
-const setOfferFormSubmit = () => {
-  offerForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+offerForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
 
-    const formData = new FormData(evt.target);
+  const formData = new FormData(evt.target);
 
-    fetch(
-      'https://22.javascript.pages.academy/keksobooking',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then(handleErrors)
-      .then(() => {
-        onFormsReset();
-        onSuccessFormSubmit()
-      })
-      .catch(() => onFailFormSubmit())
-  });
-};
+  fetch(
+    URL_FOR_SEND_DATA,
+    {
+      method: 'POST',
+      body: formData,
+    },
+  )
+    .then(handleErrors)
+    .then(() => {
+      onFormsReset();
+      onSuccessFormSubmit()
+    })
+    .catch(() => onFailFormSubmit())
+});
 
-setOfferFormSubmit();
 
 export {mainContent, onMessageEscKeydown, removeMessageElement};
