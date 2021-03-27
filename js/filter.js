@@ -1,4 +1,4 @@
-import {debounce/* , checkArrayIntersection */} from './utils.js';
+import {debounce} from './utils.js';
 import {mapFiltersForm, featuresFilterInputs} from './form.js';
 import {renderPins} from './map.js';
 import {OFFER_COUNT} from './data.js'

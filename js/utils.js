@@ -3,16 +3,13 @@ const getDeclension = (number, titlesArr) => {
   return titlesArr[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
 };
 
-function debounce(fn, interval) {
-  let timer;
-  return function () {
-    clearTimeout(timer);
-    let args = arguments;
-    let context = this;
-    timer = setTimeout(() => {
-      fn.apply(context, args);
-    }, interval);
-  };
+const debounce = (func, delay) => {
+  let timerId;
+  return (...args) => {
+    const boundFunc = func.bind(this, ...args);
+    clearTimeout(timerId);
+    timerId = setTimeout(boundFunc, delay);
+  }
 }
 
 export {getDeclension, debounce};
