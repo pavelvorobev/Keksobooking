@@ -3,9 +3,10 @@ import {mainContent, onMessageEscKeydown, removeMessageElement} from './submit.j
 import {mapFiltersForm, toggleDisabledOnFilterFormNodes} from './form.js';
 import {filterOffers} from './filter.js';
 
-const messageOnFailGetData = document.querySelector('#error2').content.querySelector('.error').cloneNode(true);
 const URL_FOR_GET_OFFERS = 'https://22.javascript.pages.academy/keksobooking/data';
 const OFFER_COUNT = 10;
+
+const messageOnFailGetData = document.querySelector('#error2').content.querySelector('.error').cloneNode(true);
 
 const onFailGetData = () => {
   mainContent.append(messageOnFailGetData);

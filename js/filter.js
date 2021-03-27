@@ -3,13 +3,13 @@ import {mapFiltersForm, featuresFilterInputs} from './form.js';
 import {renderPins} from './map.js';
 import {OFFER_COUNT} from './data.js'
 
+const FILTER_DEFAULT_VALUE = 'any';
+const RERENDER_DELAY = 500;
+
 const offerPrices = {
   low: 10000,
   high: 50000,
 }
-
-const FILTER_DEFAULT_VALUE = 'any';
-const RERENDER_DELAY = 500;
 
 let regularPinsArr = [];
 

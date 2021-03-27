@@ -1,5 +1,3 @@
-const offerForm = document.querySelector('.ad-form');
-const mapFiltersForm = document.querySelector('.map__filters');
 const ROOMS_FOR_GUESTS_MAP = {
   1: ['1'],
   2: ['2', '1'],
@@ -25,6 +23,9 @@ const APARTMENT_TYPES_MAP = {
     minPrice: 0,
   },
 };
+
+const offerForm = document.querySelector('.ad-form');
+const mapFiltersForm = document.querySelector('.map__filters');
 
 const featuresFilterInputs = document.querySelectorAll('.map__checkbox');
 let isOfferFormDisabled = false;

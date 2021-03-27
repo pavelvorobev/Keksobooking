@@ -2,14 +2,13 @@
 import {mainPin, MAP_INITIAL_COORDS} from './map.js';
 import {offerForm, mapFiltersForm} from './form.js';
 
+const URL_FOR_SEND_DATA = 'https://22.javascript.pages.academy/keksobooking';
 
 const mainContent = document.querySelector('main');
 const messageOnSuccess = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 const messageOnFail = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 const errorButton = messageOnFail.querySelector('.error__button');
 const formsResetButton = document.querySelector('.ad-form__reset');
-
-const URL_FOR_SEND_DATA = 'https://22.javascript.pages.academy/keksobooking';
 
 const onFormsReset = () => {
   mainPin.setLatLng(L.latLng(MAP_INITIAL_COORDS.lat, MAP_INITIAL_COORDS.lng));

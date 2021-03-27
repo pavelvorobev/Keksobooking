@@ -29,7 +29,7 @@ const getOfferCard = (offerObj) => {
   offerCard.querySelector('.popup__description').textContent = offer.description || '';
 
   if (offer.photos) {
-    popupPhotos.innerHTML = '';
+    popupPhotos.textContent = '';
     offer.photos.forEach((photoSrc) => {
       const clonePopupPhoto = popupPhoto.cloneNode(true);
       clonePopupPhoto.src = photoSrc;
