@@ -343,6 +343,7 @@ fieldset {
           box-shadow: 0 0 2px 2px #ff6547;
 }
 
+
 .ad-form__element {
   -ms-flex-preferred-size: 25%;
       flex-basis: 25%;
@@ -390,6 +391,18 @@ fieldset {
   outline: none;
   -webkit-box-shadow: 0 0 2px 2px #ff6547;
           box-shadow: 0 0 2px 2px #ff6547;
+}
+
+.ad-form__element input:focus:invalid {
+  outline: none;
+  -webkit-box-shadow: 0 0 2px 2px red;
+          box-shadow: 0 0 2px 2px red;
+}
+
+.ad-form__element input:focus:valid {
+  outline: none;
+  -webkit-box-shadow: 0 0 2px 2px green;
+          box-shadow: 0 0 2px 2px green;
 }
 
 .ad-form__element--time {

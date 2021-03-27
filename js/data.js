@@ -1,4 +1,4 @@
-import {getPins} from './map.js';
+import {renderPins} from './map.js';
 import {mainContent, onMessageEscKeydown, removeMessageElement} from './submit.js';
 import {mapFiltersForm, toggleDisabledOnFilterFormNodes} from './form.js';
 import {filterOffers} from './filter.js';
@@ -16,8 +16,9 @@ const onFailGetData = () => {
 fetch(URL_FOR_GET_OFFERS)
   .then((response) => response.json())
   .then((offers) => {
+    offers = offers.slice(0, OFFER_COUNT)
+    renderPins(offers);
     toggleDisabledOnFilterFormNodes();
-    getPins(offers.slice(0, OFFER_COUNT));
     mapFiltersForm.addEventListener('change', () => {
       filterOffers(offers);
     });

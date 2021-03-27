@@ -19,11 +19,4 @@ const debounce = (func, wait, immediate) => {
   };
 };
 
-const checkArrayIntersection = (arrWhere, arrWhat) => {
-  for(let i=0; i < arrWhat.length; i++){
-    if (arrWhere.indexOf(arrWhat[i]) === -1) return false;
-  }
-  return true;
-};
-
-export {getDeclension, debounce, checkArrayIntersection};
+export {getDeclension, debounce};

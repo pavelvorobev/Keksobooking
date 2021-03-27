@@ -44,12 +44,12 @@ const toggleDisabledOnFilterFormNodes = () => {
   Array.from(mapFiltersForm.elements).forEach(it => it.disabled = isFilterFormDisabled);
 };
 
-const validatePriceInput = function () {
+const validatePriceInput = () => {
   offerForm.price.placeholder = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
   offerForm.price.min = APARTMENT_TYPES_MAP[offerForm.type.value].minPrice;
 };
 
-const validateTimeSelects = function(evt) {
+const validateTimeSelects = (evt) => {
   if (evt.target === offerForm.timein) {
     offerForm.timeout.value = offerForm.timein.value;
   } else {
@@ -57,7 +57,7 @@ const validateTimeSelects = function(evt) {
   }
 };
 
-const validateGuestsSelects = function(evt) {
+const validateGuestsSelects = (evt) => {
   const capacityOptions = ROOMS_FOR_GUESTS_MAP[evt.target.value];
 
   for (let it of offerForm.capacity) {
@@ -68,7 +68,7 @@ const validateGuestsSelects = function(evt) {
 };
 
 
-const onOfferFormChange = function(evt) {
+const onOfferFormChange = (evt) => {
   switch (evt.target) {
     case offerForm.timein:
     case offerForm.timeout:

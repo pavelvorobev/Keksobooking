@@ -56,7 +56,7 @@ mainPin.on('drag', (evt) => {
   offerForm.address.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
 });
 
-const getPins = (offers) => {
+const renderPins = (offers) => {
   offers.forEach((offer) => {
     const regularPin = L.marker(
       {
@@ -75,7 +75,7 @@ const getPins = (offers) => {
   });
 }
 
-export {getPins, mainPin, MAP_INITIAL_COORDS};
+export {renderPins, mainPin, MAP_INITIAL_COORDS};
 
 
 
